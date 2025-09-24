@@ -421,9 +421,11 @@ def colorize_draw_agent_and_fit_to_height(
         agent_rotation=topdown_map_info["agent_angle"],
         agent_radius_px=min(top_down_map.shape[0:2]) // 32,
     )
-
-    if top_down_map.shape[0] > top_down_map.shape[1]:
-        top_down_map = np.rot90(top_down_map, 1)
+    limit = topdown_map_info["limits"]
+    # Crop the map to show only the agent and goal +- some buffer
+    top_down_map = top_down_map[limit[0]:limit[1], limit[2]:limit[3]]
+    # if top_down_map.shape[0] > top_down_map.shape[1]:
+    #     top_down_map = np.rot90(top_down_map, 1)
 
     # scale top down map to align with rgb view
     old_h, old_w, _ = top_down_map.shape
